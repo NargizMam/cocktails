@@ -12,7 +12,7 @@ const dropCollection = async (db: mongoose.Connection, collectionName: string) =
 const run = async () => {
   await mongoose.connect(config.mongoose.db);
   const db = mongoose.connection;
-  const collections = ['artists', 'albums', 'tracks', 'trackHistory', 'users'];
+  const collections = ['users'];
   for (const collectionName of collections) {
     await dropCollection(db, collectionName);
   }
@@ -23,7 +23,7 @@ const run = async () => {
       token: crypto.randomUUID(),
       role: 'user',
       displayName: 'Major',
-      image: 'fixtures/relaps.jpeg',
+      avatar: 'fixtures/buster.jpeg',
     },
     {
       email: 'anna@gmail.com',
@@ -31,7 +31,7 @@ const run = async () => {
       token: crypto.randomUUID(),
       role: 'user',
       displayName: 'Anna',
-      image: 'fixtures/relaps.jpeg',
+      avatar: 'fixtures/siyay.jpeg',
     },
     {
       email: 'nini@gmail.com',
@@ -39,7 +39,7 @@ const run = async () => {
       token: crypto.randomUUID(),
       role: 'admin',
       displayName: 'Ninini',
-      image: 'fixtures/relaps.jpeg',
+      avatar: 'fixtures/relaps.jpeg',
     },
   );
 
