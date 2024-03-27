@@ -1,11 +1,13 @@
+import {CssBaseline} from "@mui/material";
+import AppToolbar from "./components/AppToolbar/AppToolbar/AppToolbar.tsx";
 
-function App() {
-
-  return (
+const App = () => (
     <>
-     Cocktails
+        <CssBaseline/>
+        <header>
+            <AppToolbar/>
+        </header>
     </>
-  )
-}
+);
 
 export default App
