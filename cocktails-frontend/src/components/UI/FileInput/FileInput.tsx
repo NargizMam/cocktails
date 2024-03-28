@@ -26,11 +26,14 @@ const FileInput: React.FC<Props> = ({onChange, name,onClear, label, filename }) 
             name={name}
             onChange={onChange}
             ref={inputRef}
+            required
         />
         <Grid container direction="row" spacing={2} alignItems="center">
           <Grid item xs>
             <TextField
-                disabled
+              style={{fontFamily: 'monospace'}}
+              required
+              disabled
                 label={label}
                 value={filename || ''}
                 onClick={activateInput}

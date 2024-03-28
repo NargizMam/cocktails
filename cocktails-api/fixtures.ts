@@ -23,7 +23,7 @@ const run = async () => {
       token: crypto.randomUUID(),
       role: 'user',
       displayName: 'Major',
-      avatar: 'fixtures/buster.jpeg',
+      avatar: 'avatars/buster.jpeg',
     },
     {
       email: 'anna@gmail.com',
@@ -31,7 +31,7 @@ const run = async () => {
       token: crypto.randomUUID(),
       role: 'user',
       displayName: 'Anna',
-      avatar: 'fixtures/siyay.jpeg',
+      avatar: 'avatars/siyay.jpeg',
     },
     {
       email: 'nini@gmail.com',
@@ -39,7 +39,7 @@ const run = async () => {
       token: crypto.randomUUID(),
       role: 'admin',
       displayName: 'Ninini',
-      avatar: 'fixtures/relaps.jpeg',
+      avatar: 'avatars/relaps.jpeg',
     },
   );
 

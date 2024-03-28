@@ -42,7 +42,7 @@ const UserSchema = new Schema<UserFields, UserModal, UserMethods>({
         type: String,
         required: true,
     },
-    googleId: String,
+    googleID: String,
 });
 
 UserSchema.methods.generateToken = function () {

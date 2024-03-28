@@ -38,7 +38,6 @@ usersRouter.post('/google', async (req, res, next) => {
         }
 
         const email = payload['email'];
-
         const id = payload['sub'];
         const displayName = payload['name'];
         const image = payload['picture'];
@@ -48,13 +47,12 @@ usersRouter.post('/google', async (req, res, next) => {
         }
 
         let user = await User.findOne({ googleID: id });
-
         if (!user) {
             user = new User({
                 email: email,
                 password: crypto.randomUUID(),
                 googleID: id,
-                displayName: displayName ? displayName : email,
+                displayName: displayName,
                 avatar: image,
             });
         }
@@ -63,9 +61,6 @@ usersRouter.post('/google', async (req, res, next) => {
         await user.save();
         return res.send({ message: 'Login with Google successful!', user });
     } catch (e) {
-        if (e instanceof mongoose.Error.ValidationError) {
-            return res.status(422).send(e);
-        }
         return next(e);
     }
 });

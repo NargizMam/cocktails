@@ -7,21 +7,25 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { useAppDispatch } from '../../../app/hooks.ts';
+import { logout } from '../../../features/users/usersThunks.ts';
+import {apiURL} from "../../../constants.ts";
 interface Props {
   user: User;
 }
 
 const UserMenu: React.FC<Props> = ({user}) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
-  // let avatar = null;
-  // if (user.image) {
-  //   avatar = apiURL + '/' + user.image;
-  // }
+    let avatar = apiURL + '/avatars/' + user.avatar.replace('avatars/', '');
+  if(user.googleID){
+      avatar = user.avatar;
+  }
   const logOuted = async () => {
-    console.log('logout')
+    dispatch(logout());
     navigate('/');
   };
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -35,12 +39,13 @@ const UserMenu: React.FC<Props> = ({user}) => {
     <>
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Open settings">
-          <IconButton onClick={handleClick} sx={{ p: 0 }}>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+          <IconButton onClick={handleClick} sx={{ p: 0, mr: 5 }}>
+              Hello, {user.displayName}!
+              {avatar && (<Avatar alt={user.displayName} src={avatar} />)}
           </IconButton>
         </Tooltip>
         <Menu
-            sx={{ mt: '45px' }}
+            sx={{ mt: '45px'}}
             id="menu-appbar"
             anchorEl={anchorEl}
             anchorOrigin={{
@@ -59,7 +64,8 @@ const UserMenu: React.FC<Props> = ({user}) => {
                 <Typography textAlign="center">Все коктейли</Typography>
               </MenuItem>
         </Menu>
-        <Button onClick={logOuted}>Logout</Button>
+        <Button onClick={logOuted}>Logout<ExitToAppIcon/>
+          </Button>
       </Box>
     </>
   );
