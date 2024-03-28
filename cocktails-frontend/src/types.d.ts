@@ -35,3 +35,19 @@ export interface ValidationError {
 export interface GlobalError {
     error: string
 }
+export interface Ingredient {
+    title: string;
+    amount: string;
+}
+export interface CocktailApi {
+    _id: string;
+    user: string;
+    title: string;
+    image: string | null;
+    recipe: string;
+    isPublished: boolean;
+    ingredients: Ingredient[];
+}
+export type CocktailMutation = Omit<Cocktail, "_id"| "isPublished">
+
+

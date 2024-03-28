@@ -1,9 +1,9 @@
 
 const Cocktails = () => {
     return (
-        <div>
-            cocktails
-        </div>
+        <>
+
+        </>
     );
 };
 

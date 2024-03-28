@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { Alert, Avatar, Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
+import { Alert, Avatar, Box, Container, Grid, Link, TextField, Typography } from '@mui/material';
 import {Link as RouterLink, useNavigate} from 'react-router-dom';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import { selectLoginError } from './usersSlice.ts';
+import {selectLoginError, selectLoginLoading} from './usersSlice.ts';
 import { googleLogin, login } from './usersThunks.ts';
 import { GoogleLogin } from '@react-oauth/google';
 import { LoginMutation } from '../../types';
 import {useAppDispatch, useAppSelector } from '../../app/hooks.ts';
+import {LoadingButton} from "@mui/lab";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const error = useAppSelector(selectLoginError);
+  const loginLoading = useAppSelector(selectLoginLoading);
   const [state, setState] = useState<LoginMutation>({
     email: '',
     password: ''
@@ -87,14 +89,15 @@ const Login = () => {
               />
             </Grid>
           </Grid>
-          <Button
+          <LoadingButton
             type="submit"
             fullWidth
+            loading={loginLoading}
             variant="contained"
             sx={{mt: 3, mb: 2}}
           >
             Sign In
-          </Button>
+          </LoadingButton>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link component={RouterLink} to="/register" variant="body2">

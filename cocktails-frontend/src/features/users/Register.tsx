@@ -28,7 +28,7 @@ const Register = () => {
     email: '',
     password: '',
     displayName: '',
-    avatar: null
+    avatar: ''
   });
   const fieldsError = !state.email || !state.password || !state.displayName || !state.avatar;
   const getFieldError = (fieldName: string) => {

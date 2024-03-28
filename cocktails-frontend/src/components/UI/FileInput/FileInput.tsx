@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, {useRef, useState} from 'react';
 import { Button, Grid, TextField } from '@mui/material';
 
 interface Props {
@@ -10,13 +10,26 @@ interface Props {
 }
 
 const FileInput: React.FC<Props> = ({onChange, name,onClear, label, filename }) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+    const [filesName, setFilesname] = useState(filename);
+    const inputRef = useRef<HTMLInputElement>(null);
 
+    const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setFilesname(e.target.files[0].name);
+        } else {
+            setFilesname('');
+        }
+        onChange(e);
+    };
   const activateInput = () => {
     if (inputRef.current) {
       inputRef.current.click();
     }
   };
+  const onClearInput = () => {
+      setFilesname('');
+      if(onClear) onClear();
+  }
 
   return (
       <>
@@ -24,19 +37,17 @@ const FileInput: React.FC<Props> = ({onChange, name,onClear, label, filename }) 
             style={{display: 'none'}}
             type="file"
             name={name}
-            onChange={onChange}
+            onChange={onFileChange}
             ref={inputRef}
-            required
         />
         <Grid container direction="row" spacing={2} alignItems="center">
           <Grid item xs>
             <TextField
               style={{fontFamily: 'monospace'}}
-              required
               disabled
-                label={label}
-                value={filename || ''}
-                onClick={activateInput}
+              label={label}
+              value={filesName || ''}
+              onClick={activateInput}
             />
           </Grid>
           <Grid item>
@@ -44,7 +55,7 @@ const FileInput: React.FC<Props> = ({onChange, name,onClear, label, filename }) 
           </Grid>
           {onClear &&
               (<Grid item>
-                <Button variant="contained" onClick={onClear}>Clear</Button>
+                <Button variant="contained" onClick={onClearInput}>Clear</Button>
               </Grid>)}
         </Grid>
       </>

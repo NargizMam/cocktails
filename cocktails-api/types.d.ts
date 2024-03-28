@@ -15,3 +15,18 @@ export interface UserMethods {
   generateToken(): void;
 }
 export type UserModal = Model<UserFields, {}, UserMethods>;
+
+export interface Ingredient {
+  title: string;
+  amount: string;
+}
+export interface Cocktail {
+  _id: string;
+  user: string;
+  title: string;
+  image: string | null;
+  recipe: string;
+  isPublished: boolean;
+  ingredients: Ingredient[]
+}
+export type CocktailMutation = Omit<Cocktail, "_id"| "isPublished">

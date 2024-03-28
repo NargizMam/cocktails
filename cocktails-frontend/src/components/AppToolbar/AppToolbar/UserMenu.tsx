@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
 import {User} from '../../../types';
 import {Button, Menu, MenuItem} from '@mui/material';
-import {useNavigate} from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { useAppDispatch } from '../../../app/hooks.ts';
-import { logout } from '../../../features/users/usersThunks.ts';
+import {useAppDispatch} from '../../../app/hooks.ts';
+import {logout} from '../../../features/users/usersThunks.ts';
 import {apiURL} from "../../../constants.ts";
+
 interface Props {
   user: User;
 }
@@ -60,9 +60,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
         >
-              <MenuItem onClick={handleClose}>
-                <Typography textAlign="center">Все коктейли</Typography>
-              </MenuItem>
+            <MenuItem component={NavLink} to="/new-cocktail">Add new cocktail</MenuItem>
         </Menu>
         <Button onClick={logOuted}>Logout<ExitToAppIcon/>
           </Button>
