@@ -20,7 +20,7 @@ export interface Ingredient {
   title: string;
   amount: string;
 }
-export interface Cocktail {
+export interface CocktailApi {
   _id: string;
   user: string;
   title: string;
@@ -29,4 +29,6 @@ export interface Cocktail {
   isPublished: boolean;
   ingredients: Ingredient[]
 }
-export type CocktailMutation = Omit<Cocktail, "_id"| "isPublished">
+
+export type CocktailMutation = Omit<CocktailApi, "_id"| "isPublished">
+export type CocktailForList = Omit<CocktailApi, "recipe"| "ingredients">

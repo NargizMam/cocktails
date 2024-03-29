@@ -1,4 +1,4 @@
-import {CocktailApi, CocktailMutation, GlobalError} from "../../types";
+import {CocktailCard, CocktailMutation, GlobalError} from "../../types";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import axiosApi from "../../axiosApi.ts";
 import {isAxiosError} from "axios";
@@ -42,11 +42,11 @@ export const updatePublication = createAsyncThunk<string, string, { rejectValue:
         }
     }
 );
-export const getCocktailsList = createAsyncThunk<CocktailApi[], void, { rejectValue: GlobalError }>(
+export const getCocktailsList = createAsyncThunk<CocktailCard[], void, { rejectValue: GlobalError }>(
     'cocktails/fetch',
     async (_, {rejectWithValue}) => {
         try {
-            const response = await axiosApi.get<CocktailApi[]>('/cocktails');
+            const response = await axiosApi.get<CocktailCard[]>('/cocktails');
             return response.data;
         } catch (e) {
             if (isAxiosError(e) && e.response) {

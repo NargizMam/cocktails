@@ -1,10 +1,10 @@
-import {CocktailApi, GlobalError} from "../../types";
+import {CocktailApi, CocktailCard, GlobalError} from "../../types";
 import {createSlice} from "@reduxjs/toolkit";
 import {createCocktail, deleteCocktail, getCocktailsList, updatePublication} from "./cocktailsThunk.ts";
 import { RootState } from "../../app/store.ts";
 
 interface CocktailsState {
-    cocktailsList: CocktailApi[];
+    cocktailsList: CocktailCard[];
     fetchLoading: boolean;
     fetchListError: GlobalError | null;
     cocktail: CocktailApi | null;
