@@ -33,6 +33,7 @@ export const usersSlice = createSlice({
     });
     builder.addCase(register.fulfilled, (state, {payload: data}) => {
       state.registerLoading = false;
+      state.registerError = null;
       state.user = data.user;
     });
     builder.addCase(register.rejected, (state, {payload: error}) => {
@@ -45,6 +46,7 @@ export const usersSlice = createSlice({
     });
     builder.addCase(login.fulfilled, (state, {payload: data}) => {
       state.loginLoading = false;
+      state.loginError = null;
       state.user = data.user;
     });
     builder.addCase(login.rejected, (state, {payload: error}) => {
@@ -53,6 +55,7 @@ export const usersSlice = createSlice({
     });
     builder.addCase(googleLogin.pending, (state) => {
       state.loginLoading = true;
+      state.loginError = null;
     });
     builder.addCase(googleLogin.fulfilled, (state, {payload: data}) => {
       state.loginLoading = false;

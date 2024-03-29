@@ -16,7 +16,7 @@ usersRouter.post('/', avatarsUpload.single('avatar'), async (req, res, next) => 
         });
         user.generateToken();
         await user.save();
-        return res.send({ message: 'User is register!', user });
+        return res.send({ message: 'Пользователь зарегистрирован!', user });
     } catch (e) {
         if (e instanceof mongoose.Error.ValidationError) {
             return res.status(422).send(e);
@@ -34,7 +34,7 @@ usersRouter.post('/google', async (req, res, next) => {
         const payload = ticket.getPayload();
 
         if (!payload) {
-            return res.status(400).send({ error: 'Google login error!' });
+            return res.status(400).send({ error: 'Ошибка google аккаунта!' });
         }
 
         const email = payload['email'];
@@ -43,7 +43,7 @@ usersRouter.post('/google', async (req, res, next) => {
         const image = payload['picture'];
 
         if (!email) {
-            return res.status(400).send({ error: 'Not enough user data to continue' });
+            return res.status(400).send({ error: 'Недостаточно пользовательских данных для продолжения' });
         }
 
         let user = await User.findOne({ googleID: id });
@@ -59,7 +59,7 @@ usersRouter.post('/google', async (req, res, next) => {
         user.generateToken();
 
         await user.save();
-        return res.send({ message: 'Login with Google successful!', user });
+        return res.send({ message: 'Вход через Google успешен!', user });
     } catch (e) {
         return next(e);
     }
@@ -84,7 +84,7 @@ usersRouter.post('/sessions', async (req, res, next) => {
 usersRouter.delete('/sessions', async (req, res, next) => {
     try {
         const headerValue = req.get('Authorization');
-        const successMessage = { message: 'Success!' };
+        const successMessage = { message: 'Успех!' };
         if (!headerValue) {
             return res.send({ ...successMessage });
         }
@@ -98,7 +98,7 @@ usersRouter.delete('/sessions', async (req, res, next) => {
         }
         user.generateToken();
         await user.save();
-        return res.send({ ...successMessage, stage: 'Success' });
+        return res.send({ ...successMessage, stage: 'Успех' });
     } catch (e) {
         return next(e);
     }

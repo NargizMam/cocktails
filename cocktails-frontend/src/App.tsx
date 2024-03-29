@@ -8,6 +8,7 @@ import NewCocktail from "./features/cocktails/NewCocktail.tsx";
 import {useAppSelector} from "./app/hooks.ts";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.tsx";
 import {selectUser} from "./features/users/usersSlice.ts";
+import WarningMessage from "./features/WarningMessage/WarningMessages.tsx";
 
 const App = () => {
     const user = useAppSelector(selectUser);
@@ -18,6 +19,7 @@ return(
             <AppToolbar/>
         </header>
         <Container>
+            <WarningMessage/>
             <Routes>
                 <Route path="/" element={<Cocktails/>}/>
                 <Route path="/new-cocktail"  element={(

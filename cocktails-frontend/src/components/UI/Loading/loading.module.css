@@ -1,16 +1,16 @@
 .spinner {
     margin: 100px auto;
     width: 200px;
-    height: 60px;
+    height: 80px;
     text-align: center;
-    font-size: 10px;
+    font-size: 15px;
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
 }
 
 .spinner > div {
-    background-color: #5047e5;
+    background-color: #2e2e2f;
     height: 100%;
     width: 6px;
     display: inline-block;

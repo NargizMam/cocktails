@@ -4,33 +4,39 @@ import {imagesUpload} from "../multer";
 import {CocktailForList, CocktailMutation} from "../types";
 import Cocktail from "../models/Cocktail";
 import client from "../middleware/client";
+import permit from "../middleware/permit";
 
 const cocktailsRouter = express.Router();
 
 cocktailsRouter.get('/', client, async (req: RequestWithUser, res, next) => {
     const user = req.user;
-    console.log(user, 'user');
 
     let cocktailsList: CocktailForList[] = [];
-    const hhh = await  Cocktail.find();
-    console.log(hhh, 0)
+    const hhh = await  Cocktail.find().select('-recipe -ingredients');
     try {
-        cocktailsList = await Cocktail.find({isPublished: true}, 'title user image isPublished');
-        console.log(cocktailsList, 1)
+        cocktailsList = await Cocktail.find({isPublished: true});
 
         if (user) {
-            cocktailsList = await Cocktail.find({$or: [{isPublished: true}, {user: user._id.toString(), isPublished: false}]}, 'title user image isPublished');
-            console.log(cocktailsList, 2)
+            cocktailsList = await Cocktail.find({$or: [{isPublished: true}, {user: user._id.toString(), isPublished: false}]}).select('-recipe -ingredients');
 
             if (user.role === 'admin') {
                 cocktailsList = await Cocktail.find().select('-recipe -ingredients');
-                console.log(cocktailsList, 3)
             }
         }
-        console.log(cocktailsList, 4);
         return res.send(cocktailsList);
-    } catch
-        (e) {
+    } catch (e) {
+        next(e);
+    }
+});
+cocktailsRouter.get('/:id', async (req, res, next) => {
+    try {
+        const selectCocktail = await Cocktail.findById(req.params.id);
+
+        if (!selectCocktail) {
+            return res.status(404).send({ error: 'Коктейл не найден!' });
+        }
+        return res.send(selectCocktail);
+    } catch (e) {
         next(e);
     }
 });
@@ -49,11 +55,43 @@ cocktailsRouter.post('/', auth, imagesUpload.single('image'), async (req: Reques
         };
         const cocktail = new Cocktail(cocktailsData);
         await cocktail.save();
-        return res.send('Cocktail was created!');
+        return res.send('Ваш коктейль находится на рассмотрении модератора!');
     } catch (e) {
         next(e);
     }
 });
+cocktailsRouter.patch('/:id/togglePublished',auth, permit('admin'), async (req, res, next) => {
+    try {
+        const cocktailsId = req.params.id;
 
+        Cocktail.findById(cocktailsId).then((cocktail) => {
+            if (!cocktail) {
+                throw new Error('Данный коктейль не найден!');
+            }
+            cocktail.isPublished = !cocktail.isPublished;
+
+            cocktail.save();
+        });
+        return res.send('Коктейль успешно опубликован!');
+    } catch (e) {
+        next(e);
+    }
+});
+cocktailsRouter.delete('/:id', auth, permit('admin'), async (req: RequestWithUser, res, next) => {
+    const id = req.params.id;
+    const user = req.user!;
+
+    try {
+        let deletedAlbums;
+        deletedAlbums = await Cocktail.findByIdAndDelete(id);
+
+        if (!deletedAlbums) {
+            return res.send('Коктейль, возможно, был удален!');
+        }
+        return res.send('Коктейль был успешно удален!');
+    } catch (e) {
+        next(e);
+    }
+});
 
 export default cocktailsRouter;

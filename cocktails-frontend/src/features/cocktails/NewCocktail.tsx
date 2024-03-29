@@ -6,7 +6,8 @@ import FileInput from "../../components/UI/FileInput/FileInput.tsx";
 import {useAppDispatch, useAppSelector} from "../../app/hooks.ts";
 import {selectCocktailsCreating} from "./cocktailsSlice.ts";
 import {useNavigate} from "react-router-dom";
-import {createCocktail} from "./cocktailsThunk.ts";
+import {createCocktail, getCocktailsList} from "./cocktailsThunk.ts";
+import {openErrorMessage, openSuccessMessage} from "../WarningMessage/warningMessageSlice.ts";
 
 const initialState = {
     title: '',
@@ -62,10 +63,17 @@ const NewCocktail = () => {
             image: ''
         }));
     });
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(createCocktail(cocktail)).unwrap;
-        navigate('/');
+        try{
+            await dispatch(createCocktail(cocktail));
+            dispatch(openSuccessMessage());
+            dispatch(getCocktailsList());
+            navigate('/');
+        }catch (e) {
+            dispatch(openErrorMessage());
+        }
+
     };
 
     return (

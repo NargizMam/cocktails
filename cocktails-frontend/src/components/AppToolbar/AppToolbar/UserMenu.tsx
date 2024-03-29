@@ -10,6 +10,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import {useAppDispatch} from '../../../app/hooks.ts';
 import {logout} from '../../../features/users/usersThunks.ts';
 import {apiURL} from "../../../constants.ts";
+import {getCocktailsList} from "../../../features/cocktails/cocktailsThunk.ts";
 
 interface Props {
   user: User;
@@ -25,7 +26,8 @@ const UserMenu: React.FC<Props> = ({user}) => {
       avatar = user.avatar;
   }
   const logOuted = async () => {
-    dispatch(logout());
+    await dispatch(logout());
+    dispatch(getCocktailsList());
     navigate('/');
   };
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
