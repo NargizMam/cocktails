@@ -9,7 +9,10 @@ import {useAppSelector} from "./app/hooks.ts";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.tsx";
 import {selectUser} from "./features/users/usersSlice.ts";
 import WarningMessage from "./features/WarningMessage/WarningMessages.tsx";
-import CocktailsInfo from "./features/cocktails/CocktailsInfo.tsx";
+import UsersCocktails from "./features/cocktails/UsersCocktails.tsx";
+import InfoCocktail from "./features/cocktails/InfoCocktail.tsx";
+import Footer from "./components/Footer/Footer.tsx";
+
 
 const App = () => {
     const user = useAppSelector(selectUser);
@@ -19,7 +22,7 @@ return(
         <header>
             <AppToolbar/>
         </header>
-        <Container>
+        <Container sx={{ marginBottom: '150px' }}>
             <WarningMessage/>
             <Routes>
                 <Route path="/" element={<Cocktails/>}/>
@@ -29,14 +32,18 @@ return(
                     </ProtectedRoute>)}/>
                 <Route path="/cocktails/:id"  element={(
                     <ProtectedRoute isAllowed={!!user}>
-                        <CocktailsInfo/>
+                        <InfoCocktail/>
+                    </ProtectedRoute>)}/>
+                <Route path="/cocktails/my-cocktails"  element={(
+                    <ProtectedRoute isAllowed={!!user}>
+                        <UsersCocktails/>
                     </ProtectedRoute>)}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="*" element={<h1>Not found</h1>}/>
             </Routes>
         </Container>
-
+        <Footer/>
     </>
     )
 

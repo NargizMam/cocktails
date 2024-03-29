@@ -10,18 +10,16 @@ const cocktailsRouter = express.Router();
 
 cocktailsRouter.get('/', client, async (req: RequestWithUser, res, next) => {
     const user = req.user;
-
+    const userName = req.query.users;
     let cocktailsList: CocktailForList[] = [];
-    const hhh = await  Cocktail.find().select('-recipe -ingredients');
     try {
-        cocktailsList = await Cocktail.find({isPublished: true});
-
-        if (user) {
-            cocktailsList = await Cocktail.find({$or: [{isPublished: true}, {user: user._id.toString(), isPublished: false}]}).select('-recipe -ingredients');
-
-            if (user.role === 'admin') {
-                cocktailsList = await Cocktail.find().select('-recipe -ingredients');
-            }
+        if (user?.role === 'admin') {
+            cocktailsList = await Cocktail.find().select('-recipe -ingredients');
+        }
+        if(userName){
+          cocktailsList = await Cocktail.find({user: user?._id.toString()}).select('-recipe -ingredients');
+        }else{
+            cocktailsList = await Cocktail.find({isPublished: true});
         }
         return res.send(cocktailsList);
     } catch (e) {
@@ -44,8 +42,7 @@ cocktailsRouter.post('/', auth, imagesUpload.single('image'), async (req: Reques
     const user = req.user;
     try {
         if (!user?._id) return;
-        const ingredients = Array.isArray(req.body.ingredients) ? req.body.ingredients : [];
-
+        const ingredients = req.body.ingredients || [];
         const cocktailsData: CocktailMutation = {
             user: user._id.toString(),
             title: req.body.title,

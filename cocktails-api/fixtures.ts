@@ -24,7 +24,7 @@ const run = async () => {
       token: crypto.randomUUID(),
       role: 'user',
       displayName: 'Major',
-      avatar: 'avatars/buster.jpeg',
+      avatar: 'fixtures/buster.jpeg',
     },
     {
       email: 'anna@gmail.com',
@@ -32,7 +32,7 @@ const run = async () => {
       token: crypto.randomUUID(),
       role: 'user',
       displayName: 'Anna',
-      avatar: 'avatars/siyay.jpeg',
+      avatar: 'fixtures/siyay.jpeg',
     },
     {
       email: 'nini@gmail.com',
@@ -40,7 +40,7 @@ const run = async () => {
       token: crypto.randomUUID(),
       role: 'admin',
       displayName: 'Ninini',
-      avatar: 'avatars/relaps.jpeg',
+      avatar: 'fixtures/relaps.jpeg',
     },
   );
   await Cocktail.create(

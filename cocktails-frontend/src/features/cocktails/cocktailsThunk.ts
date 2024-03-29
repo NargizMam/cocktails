@@ -1,4 +1,4 @@
-import {CocktailApi, CocktailCard, CocktailMutation, GlobalError} from "../../types";
+import {CocktailApi, CocktailCard, CocktailMutation, GlobalError, Ingredient} from "../../types";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import axiosApi from "../../axiosApi.ts";
 import {isAxiosError} from "axios";
@@ -9,13 +9,12 @@ export const createCocktail = createAsyncThunk<string, CocktailMutation, { rejec
         try {
             const formData = new FormData();
 
-            const keys = Object.keys(cocktailMutation);
-            keys.forEach(key => {
-                const value = cocktailMutation[key];
-
-                if (value !== null) {
-                    formData.append(key, value);
-                }
+            formData.append('title', cocktailMutation.title);
+            formData.append('recipe', cocktailMutation.recipe);
+            formData.append('image', cocktailMutation.image);
+            cocktailMutation.ingredients.forEach((ingredient: Ingredient, index: number) => {
+                formData.append(`ingredients[${index}][title]`, ingredient.title);
+                formData.append(`ingredients[${index}][amount]`, ingredient.amount);
             });
             const response = await axiosApi.post('/cocktails', formData);
             return response.data;
@@ -42,11 +41,16 @@ export const updatePublication = createAsyncThunk<string, string, { rejectValue:
         }
     }
 );
-export const getCocktailsList = createAsyncThunk<CocktailCard[], void, { rejectValue: GlobalError }>(
+export const getCocktailsList = createAsyncThunk<CocktailCard[], string | undefined, { rejectValue: GlobalError }>(
     'cocktails/fetch',
-    async (_, {rejectWithValue}) => {
+    async (userName, {rejectWithValue}) => {
         try {
-            const response = await axiosApi.get<CocktailCard[]>('/cocktails');
+            let response;
+            if(userName){
+                response = await axiosApi.get<CocktailCard[]>(`/cocktails?users=${userName}`);
+                return response.data;
+            }
+            response = await axiosApi.get<CocktailCard[]>('/cocktails');
             return response.data;
         } catch (e) {
             if (isAxiosError(e) && e.response) {
@@ -57,6 +61,7 @@ export const getCocktailsList = createAsyncThunk<CocktailCard[], void, { rejectV
 
     }
 );
+
 export const fetchOneCocktail = createAsyncThunk<CocktailApi, string,{ rejectValue: GlobalError } >(
     'cocktails/fetchOne',
     async (id, {rejectWithValue}) => {

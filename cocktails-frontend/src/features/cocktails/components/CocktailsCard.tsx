@@ -25,7 +25,8 @@ const CocktailsCard: React.FC<Props> = ({ cocktail }) => {
         }
     }
 
-     if (userClient?.role === 'admin' && !isPublished) {
+     if (!isPublished) {
+         if(userClient?.role === 'admin' && userClient?._id === cocktail.user)
             publishedAction = <Typography>Не опубликовано</Typography>;
         }
 

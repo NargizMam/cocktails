@@ -14,7 +14,7 @@ export default function Footer() {
             left: 0,
             bottom: 0,
             width: '100%',
-            height: '80px'}}>
+            height: '60px'}}>
             <Container maxWidth="lg">
                 <Typography variant="body2" color="secondary" align="center">
                     {'Copyright © '}

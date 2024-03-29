@@ -21,7 +21,11 @@ const UserMenu: React.FC<Props> = ({user}) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
-    let avatar = apiURL + '/avatars/' + user.avatar.replace('avatars/', '');
+    let avatar  = apiURL + '/avatars/' + user.avatar;
+    if (user.avatar.includes('fixtures')) {
+        avatar = apiURL + '/' + user.avatar;
+    }
+
   if(user.googleID){
       avatar = user.avatar;
   }
@@ -63,7 +67,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
             onClose={handleClose}
         >
             <MenuItem component={NavLink} to="/new-cocktail">Add new cocktail</MenuItem>
-            <MenuItem component={NavLink} to="/cocktails">Мои коктейли</MenuItem>
+            <MenuItem component={NavLink} to={"/cocktails/my-cocktails"}>Мои коктейли</MenuItem>
         </Menu>
         <Button onClick={logOuted}>Logout<ExitToAppIcon/>
           </Button>
