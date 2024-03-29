@@ -63,6 +63,7 @@ const UserMenu: React.FC<Props> = ({user}) => {
             onClose={handleClose}
         >
             <MenuItem component={NavLink} to="/new-cocktail">Add new cocktail</MenuItem>
+            <MenuItem component={NavLink} to="/cocktails">Мои коктейли</MenuItem>
         </Menu>
         <Button onClick={logOuted}>Logout<ExitToAppIcon/>
           </Button>

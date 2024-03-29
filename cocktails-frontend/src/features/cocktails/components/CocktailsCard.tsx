@@ -1,77 +1,36 @@
 import React from 'react';
-import {Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, IconButton, Typography} from '@mui/material';
+import {Card, CardActionArea, CardActions, CardContent, CardMedia, IconButton, Typography} from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import {NavLink, useNavigate} from "react-router-dom";
-import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
+import {NavLink} from "react-router-dom";
 import {CocktailCard} from '../../../types';
 import {apiURL} from "../../../constants.ts";
 import {selectUser} from "../../users/usersSlice.ts";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks.ts";
-import {selectCocktailDeleting, selectCocktailsIsPublishedFetching} from "../cocktailsSlice.ts";
-import {deleteCocktail, getCocktailsList, updatePublication} from "../cocktailsThunk.ts";
-import {openErrorMessage, openSuccessMessage} from "../../WarningMessage/warningMessageSlice.ts";
+import {useAppSelector} from "../../../app/hooks.ts";
 
 interface Props {
     cocktail: CocktailCard;
 }
 const CocktailsCard: React.FC<Props> = ({ cocktail }) => {
-    const {_id, title, isPublished, image, user } = cocktail;
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
+    const {_id, title, isPublished, image } = cocktail;
     const userClient = useAppSelector(selectUser);
-    const deleting = useAppSelector(selectCocktailDeleting);
-    const updating = useAppSelector(selectCocktailsIsPublishedFetching);
 
     let publishedAction = null;
 
     let cardImage;
-
     if (image) {
-        cardImage = apiURL + '/images/' + image;
+        if (!image.includes('fixtures')) {
+            cardImage = apiURL + '/images/' + image;
+        }else{
+            cardImage = apiURL + '/' + image;
+        }
     }
-    const onDeleteCocktail = async () => {
-        try {
-            await dispatch(deleteCocktail(_id)).unwrap();
-            dispatch(openSuccessMessage());
-            dispatch(getCocktailsList());
-            navigate('/');
-        } catch (e) {
-            dispatch(openErrorMessage());
-        }
-    };
-    const toPublishedCocktail = async () => {
-        try {
-            await dispatch(updatePublication(_id)).unwrap();
-            dispatch(openSuccessMessage());
-            dispatch(getCocktailsList());
-        } catch (e) {
-            dispatch(openErrorMessage());
-        }
-    };
-    if (isPublished && user) {
-        if (userClient?.role === 'admin') {
-            publishedAction = (<Grid>
-                <LoadingButton loading={deleting} onClick={onDeleteCocktail}>Удалить</LoadingButton>
-            </Grid>);
-        }
-    } else if (!isPublished && user) {
-        if (userClient?.role === 'admin') {
-            publishedAction = (
-                <Grid>
-                    <LoadingButton sx={{ml: 1}}
-                                   variant="contained"
-                                   color="warning"
-                                   loading={updating}
-                                   onClick={toPublishedCocktail}
-                    >Опубликовать</LoadingButton>
-                </Grid>
-            );
-        } else if (userClient?.role !== 'admin' && userClient?._id === user) {
+
+     if (userClient?.role === 'admin' && !isPublished) {
             publishedAction = <Typography>Не опубликовано</Typography>;
         }
-    }
+
     return (
-        <Card sx={{width: '80%', m: 2, p: 2, alignItems: 'center', textDecoration: 'none', borderRadius: 2}}>
+        <Card sx={{width: '95%',height: '350px', m: 2, p: 2, alignItems: 'center', textDecoration: 'none', borderRadius: 2}}>
             <CardActionArea component={NavLink} to={'/cocktails/' + _id}
                             sx={{ borderRadius: 2}}
             >
@@ -83,7 +42,7 @@ const CocktailsCard: React.FC<Props> = ({ cocktail }) => {
             <CardContent>
                 <Typography variant="h5">{title}</Typography>
             </CardContent>
-                <IconButton style={{ position: 'absolute', bottom: 0, right: 0, margin: '16px' }}>
+                <IconButton style={{ position: 'absolute', bottom: 0, right: 0, margin: '25px' }}>
                     <ArrowForwardIcon/>
                 </IconButton>
             </CardActionArea>

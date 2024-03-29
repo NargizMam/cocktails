@@ -1,6 +1,12 @@
 import {CocktailApi, CocktailCard, GlobalError} from "../../types";
 import {createSlice} from "@reduxjs/toolkit";
-import {createCocktail, deleteCocktail, getCocktailsList, updatePublication} from "./cocktailsThunk.ts";
+import {
+    createCocktail,
+    deleteCocktail,
+    fetchOneCocktail,
+    getCocktailsList,
+    updatePublication
+} from "./cocktailsThunk.ts";
 import { RootState } from "../../app/store.ts";
 
 interface CocktailsState {
@@ -40,6 +46,16 @@ const cocktailsSlice = createSlice({
             })
             .addCase(getCocktailsList.rejected, (state) => {
                 state.fetchLoading = false;
+            })
+            .addCase(fetchOneCocktail.pending, (state) => {
+                state.fetchOneLoading = true;
+            })
+            .addCase(fetchOneCocktail.fulfilled, (state, {payload: cocktails}) => {
+                state.fetchOneLoading = false;
+                state.cocktail = cocktails;
+            })
+            .addCase(fetchOneCocktail.rejected, (state) => {
+                state.fetchOneLoading = false;
             })
             .addCase(updatePublication.pending, (state) => {
                 state.isPublishedFetching = true;
@@ -93,7 +109,8 @@ export const cocktailsReducer = cocktailsSlice.reducer;
 
 export const selectCocktailsList = (state: RootState) => state.cocktails.cocktailsList
 export const selectCocktailsListFetching = (state: RootState) => state.cocktails.fetchLoading;
-
+export const selectOneCocktail = (state: RootState) => state.cocktails.cocktail
+export const selectOneCocktailFetching = (state: RootState) => state.cocktails.fetchOneLoading
 export const selectCocktailsCreating = (state: RootState) => state.cocktails.creating;
 export const selectCocktailsIsPublishedFetching = (state: RootState) => state.cocktails.isPublishedFetching;
 
