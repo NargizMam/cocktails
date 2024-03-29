@@ -1,8 +1,10 @@
 import {LoadingButton} from "@mui/lab";
 import {Button, Grid, TextField, Typography} from "@mui/material";
 import React, {useState} from "react";
-import IngredientForm from "./components/Ingredients/IngredientForm";
+import IngredientForm from "./components/IngredientForm.tsx";
 import FileInput from "../../components/UI/FileInput/FileInput.tsx";
+import {useAppSelector} from "../../app/hooks.ts";
+import {selectCocktailsCreating} from "./cocktailsSlice.ts";
 
 const initialState = {
     title: '',
@@ -17,6 +19,7 @@ const initialState = {
 
 const NewCocktail = () => {
     const [cocktail, setCocktail] = useState(initialState);
+    const creating = useAppSelector(selectCocktailsCreating);
     const handleAddIngredient = () => {
         setCocktail({
             ...cocktail,
@@ -104,7 +107,12 @@ const NewCocktail = () => {
                     </Button>
                 </Grid>
                 <Grid item xs={12}>
-                    <LoadingButton disabled={fieldsError} variant="contained" color="primary" type="submit">
+                    <LoadingButton
+                        loading={creating}
+                        disabled={fieldsError}
+                        variant="contained"
+                        color="primary"
+                        type="submit">
                         Create
                     </LoadingButton>
                 </Grid>

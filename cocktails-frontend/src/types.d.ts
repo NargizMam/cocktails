@@ -43,11 +43,11 @@ export interface CocktailApi {
     _id: string;
     user: string;
     title: string;
-    image: string | null;
+    image: string;
     recipe: string;
     isPublished: boolean;
     ingredients: Ingredient[];
 }
 export type CocktailMutation = Omit<Cocktail, "_id"| "isPublished">
-
+export type CocktailCard = Omit<CocktailApi, "recipe" | "ingredients">
 

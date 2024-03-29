@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import { Button, Grid, TextField } from '@mui/material';
+import {Button, Grid, TextField} from '@mui/material';
 
 interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -10,14 +10,14 @@ interface Props {
 }
 
 const FileInput: React.FC<Props> = ({onChange, name,onClear, label, filename }) => {
-    const [filesName, setFilesname] = useState(filename);
+    const [filesName, setFilesName] = useState(filename);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
-            setFilesname(e.target.files[0].name);
+            setFilesName(e.target.files[0].name);
         } else {
-            setFilesname('');
+            setFilesName('');
         }
         onChange(e);
     };
@@ -27,7 +27,7 @@ const FileInput: React.FC<Props> = ({onChange, name,onClear, label, filename }) 
     }
   };
   const onClearInput = () => {
-      setFilesname('');
+      setFilesName('');
       if(onClear) onClear();
   }
 
