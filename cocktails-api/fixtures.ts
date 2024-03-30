@@ -17,7 +17,7 @@ const run = async () => {
   for (const collectionName of collections) {
     await dropCollection(db, collectionName);
   }
-  const [user1, user2, user3] = await User.create(
+  const [user1, user2] = await User.create(
     {
       email: 'misha@gmail.com',
       password: '123',

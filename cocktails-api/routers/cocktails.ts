@@ -76,7 +76,6 @@ cocktailsRouter.patch('/:id/togglePublished', auth, permit('admin'), async (req,
 });
 cocktailsRouter.delete('/:id', auth, permit('admin'), async (req: RequestWithUser, res, next) => {
   const id = req.params.id;
-  const user = req.user!;
 
   try {
     let deletedAlbums;
