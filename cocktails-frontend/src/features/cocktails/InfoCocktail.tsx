@@ -8,7 +8,7 @@ import {
     selectOneCocktail,
     selectOneCocktailFetching
 } from "./cocktailsSlice.ts";
-import {CardMedia, Grid, List, ListItem, ListItemIcon, ListItemText, Paper, Typography} from "@mui/material";
+import {CardMedia, Divider, Grid, List, ListItem, ListItemIcon, ListItemText, Paper, Typography} from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton/LoadingButton";
 import {selectUser} from "../users/usersSlice.ts";
 import {openErrorMessage, openSuccessMessage} from "../WarningMessage/warningMessageSlice.ts";
@@ -16,7 +16,7 @@ import Loading from "../../components/UI/Loading/Loading.tsx";
 import {apiURL} from "../../constants.ts";
 
 const InfoCocktail = () => {
-    const {idParams} = useParams();
+    const {id} = useParams();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const cocktail = useAppSelector(selectOneCocktail);
@@ -31,12 +31,12 @@ const InfoCocktail = () => {
 
 
     useEffect(() => {
-        if (!idParams || !userClient) {
+        if (!id || !userClient) {
             navigate('/');
         } else {
-            dispatch(fetchOneCocktail(idParams));
+            dispatch(fetchOneCocktail(id));
         }
-    }, [dispatch, idParams]);
+    }, [dispatch, id]);
 
 
     if (!cocktail) {
@@ -89,7 +89,7 @@ const InfoCocktail = () => {
                         >Опубликовать</LoadingButton>
                     </Grid>
                 );
-            } else if (userClient.role !== 'admin' && userClient._id === user) {
+            } else if (userClient._id === user) {
                 publishedAction = <Typography>Не опубликовано</Typography>;
             }
         }
@@ -110,17 +110,21 @@ const InfoCocktail = () => {
                     <Typography variant="h5" component="div" gutterBottom>
                         {title}
                     </Typography>
+                    <hr/>
                     <Typography variant="body1" color="text.secondary" gutterBottom>
                         Ingredients:
                     </Typography>
                     <List>
                         {ingredients.map((ingredient, index) => (
-                            <ListItem key={index}>
-                                <ListItemIcon>
-                                    <Typography>{ingredient.title} : </Typography>
-                                </ListItemIcon>
-                                <ListItemText primary={ingredient.amount}/>
-                            </ListItem>
+                            <div  key={index}>
+                                <ListItem>
+                                    <ListItemIcon>
+                                        <Typography>{ingredient.title} : </Typography>
+                                    </ListItemIcon>
+                                    <ListItemText primary={ingredient.amount}/>
+                                </ListItem>
+                                <Divider/>
+                            </div>
                         ))}
                     </List>
                 </Grid>

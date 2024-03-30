@@ -27,8 +27,8 @@ export interface CocktailApi {
   image: string | null;
   recipe: string;
   isPublished: boolean;
-  ingredients: Ingredient[]
+  ingredients: Ingredient[];
 }
 
-export type CocktailMutation = Omit<CocktailApi, "_id"| "isPublished">
-export type CocktailForList = Omit<CocktailApi, "recipe"| "ingredients">
+export type CocktailMutation = Omit<CocktailApi, '_id' | 'isPublished'>;
+export type CocktailForList = Omit<CocktailApi, 'recipe' | 'ingredients'>;

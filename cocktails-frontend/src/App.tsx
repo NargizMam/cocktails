@@ -30,13 +30,13 @@ return(
                     <ProtectedRoute isAllowed={!!user}>
                         <NewCocktail/>
                     </ProtectedRoute>)}/>
+                <Route  path="/my-cocktails"  element={(
+                    <ProtectedRoute isAllowed={!!user}>
+                        <UsersCocktails/>
+                    </ProtectedRoute>)}/>
                 <Route path="/cocktails/:id"  element={(
                     <ProtectedRoute isAllowed={!!user}>
                         <InfoCocktail/>
-                    </ProtectedRoute>)}/>
-                <Route path="/cocktails/my-cocktails"  element={(
-                    <ProtectedRoute isAllowed={!!user}>
-                        <UsersCocktails/>
                     </ProtectedRoute>)}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/login" element={<Login/>}/>

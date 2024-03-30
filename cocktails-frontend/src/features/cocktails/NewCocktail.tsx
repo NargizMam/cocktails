@@ -66,7 +66,6 @@ const NewCocktail = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try{
-            console.log(cocktail)
             await dispatch(createCocktail(cocktail));
             dispatch(openSuccessMessage());
             dispatch(getCocktailsList());
